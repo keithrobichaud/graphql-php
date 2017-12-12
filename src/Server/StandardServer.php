@@ -45,6 +45,11 @@ class StandardServer
     private $helper;
 
     /**
+     * @var array
+     */
+    private $result;
+
+    /**
      * Converts and exception to error and sends spec-compliant HTTP 500 error.
      * Useful when an exception is thrown somewhere outside of server execution context
      * (e.g. during schema instantiation).
@@ -100,7 +105,12 @@ class StandardServer
     public function handleRequest($parsedBody = null, $exitWhenDone = false)
     {
         $result = $this->executeRequest($parsedBody);
+        $this->result = $result;
         $this->helper->sendResponse($result, $exitWhenDone);
+    }
+
+    public function getResult() {
+        return $this->result;
     }
 
     /**
